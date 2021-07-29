@@ -33,6 +33,17 @@ class nafadb {
 
       )
       ''');
+    await db.execute('''
+      CREATE TABLE kharcha(
+          id INTEGER PRIMARY KEY,
+          invoice TEXT,
+          date TEXT,
+          title TEXT,
+          rate TEXT,
+          total TEXT
+
+      )
+      ''');
   }
 
   Future<List<Transcation>> getGroceries() async {
@@ -59,4 +70,31 @@ class nafadb {
     return await db.update('transcations', nafa.toMap(),
         where: "id = ?", whereArgs: [nafa.id]);
   }
+
+  ///********Kharcha Database starts */
+  Future<List<Transcation>> getKharcha() async {
+    Database db = await instance.database;
+    var kharcha = await db.query('kharcha', orderBy: 'id');
+    List<Transcation> kharchaList = kharcha.isNotEmpty
+        ? kharcha.map((c) => Transcation.fromMap(c)).toList()
+        : [];
+    return kharchaList;
+  }
+
+  Future<int> create(Transcation nafa) async {
+    Database db = await instance.database;
+    return await db.insert('kharcha', nafa.toMap());
+  }
+
+  Future<int> delete(int id) async {
+    Database db = await instance.database;
+    return await db.delete('kharcha', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // Future<int> update(Transcation nafa) async {
+  //   Database db = await instance.database;
+  //   return await db.update('transcations', nafa.toMap(),
+  //       where: "id = ?", whereArgs: [nafa.id]);
+  // }
+
 }
