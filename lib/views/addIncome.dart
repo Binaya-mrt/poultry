@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:poultry/database/db.dart';
+import 'package:poultry/models/transcationModel.dart';
 
 class AddIncome extends StatefulWidget {
   @override
@@ -6,6 +8,12 @@ class AddIncome extends StatefulWidget {
 }
 
 class _AddIncomeState extends State<AddIncome> {
+  TextEditingController _bill = TextEditingController();
+  TextEditingController _date = TextEditingController();
+  TextEditingController _title = TextEditingController();
+  TextEditingController _rate = TextEditingController();
+  TextEditingController _total = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +35,7 @@ class _AddIncomeState extends State<AddIncome> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: TextFormField(
+                        controller: _bill,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 25),
                         decoration: InputDecoration(
@@ -41,6 +50,7 @@ class _AddIncomeState extends State<AddIncome> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: TextFormField(
+                        controller: _date,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
@@ -59,6 +69,7 @@ class _AddIncomeState extends State<AddIncome> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextFormField(
+                  controller: _title,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25),
                   decoration: InputDecoration(
@@ -74,6 +85,7 @@ class _AddIncomeState extends State<AddIncome> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextFormField(
+                  controller: _rate,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25),
                   decoration: InputDecoration(
@@ -89,6 +101,7 @@ class _AddIncomeState extends State<AddIncome> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextFormField(
+                  controller: _total,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25),
                   decoration: InputDecoration(
@@ -99,7 +112,23 @@ class _AddIncomeState extends State<AddIncome> {
                 height: 20,
               ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await nafadb.instance.add(
+                      Transcation(
+                          invoice: _bill.text,
+                          date: _date.text,
+                          title: _title.text,
+                          rate: _rate.text,
+                          total: _total.text),
+                    );
+                    setState(() {
+                      _bill.clear();
+                      _date.clear();
+                      _title.clear();
+                      _rate.clear();
+                      _total.clear();
+                    });
+                  },
                   child: Text(
                     'Add Income',
                     style: TextStyle(fontSize: 30),
